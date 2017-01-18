@@ -236,7 +236,8 @@ var catacrac : Float!
 
 //: Aggregate types: enums, structs, classes, tuples
 
-/*: ###Valores para las enums
+//: ### Valores para las enums
+/*:
  * ninguno, como es el caso de LightSabreColor.
  * Un tipo homogeneo que se accede via la propiedad rawValue, como por ejemplo StarwarsAffiliation
  * Tipos asociados, distintos en cada caso. Por ejemplo, Optional.
@@ -464,8 +465,8 @@ let ttt = tt as? Thong  // por las buenas
 //let tttt = tt as! Thong // por las bravas
 
 
-//: ###Optional Chaining
-
+//: ### Optional Chaining
+//: #### Es otra forma de desempaquetado seguro
 let n : String? = "Anakin Skywalker"
 let firstName = n?.components(separatedBy:" ")[0]
 print(firstName ?? "Soy un opcional vacío, que conste")
@@ -473,10 +474,24 @@ let caps = firstName?.uppercased()
 let maybeAFloat: Optional<Float>
 
 
+//: ## Niveles de Acceso
+/*: Hay 4 opciones
+ 
+ * public: se ve fuera del módulo. Util cuancdo haces Frameworks propias
+ * internal: visible dentro del módulo (framework o app en la que estás trabajando). Es la opción por defeto y no hace falta escribirla
+ * fileprivate: visible solo dentro del fichero
+ * private: visible solo dentro del tipo
+*/
 
-
-
-
+// Prinicipio de un implementación de un Bag(http://algs4.cs.princeton.edu/13stacks/)
+// Es *public* porque es parte de una Framework de estructuras de datos que vamos a
+// publicar en GitHub y hacernos más famosos que Trump
+public struct Bag<Value: Hashable>{
+    
+    // Esta función es privada y no quiero que se vea fuera de la implementación
+    // de Bag. Además, empiezo su nombre con _ para que quede aun más claro
+    private func _doSomeWeirdÑapa(){}
+}
 
 
 
