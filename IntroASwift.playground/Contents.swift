@@ -381,7 +381,7 @@ extension Int{
 (2,"hola")
 
 // tuplas dentro de tuplas:3-tupla con una 2-tupla dentro
-(45, ("Hola", NSDate()), 45)
+(45, ("Hola", Date()), 45)
 
 // ¿Hay 1-tupla?
 // NO.
@@ -473,6 +473,8 @@ print(firstName ?? "Soy un opcional vacío, que conste")
 let caps = firstName?.uppercased()
 let maybeAFloat: Optional<Float>
 
+//: ## Genéricos
+//: Continuará...
 
 //: ## Niveles de Acceso
 /*: Hay 4 opciones
