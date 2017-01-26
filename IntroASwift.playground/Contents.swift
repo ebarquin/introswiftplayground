@@ -474,7 +474,41 @@ let caps = firstName?.uppercased()
 let maybeAFloat: Optional<Float>
 
 //: ## Genéricos
-//: Continuará...
+//: Ejemplos que ya conocemos
+// Las colecciones
+let nums = [1,2,3,4,5]
+let numss : Array<Int> = [1,2,3,4,5]
+
+let dict : Dictionary<String, Int>?
+
+let maybeADouble : Optional<Double>
+
+// Class 
+class Pair<Left, Right>{
+    let left : Left
+    let right : Right
+    
+    init(left: Left, right: Right){
+        self.left = left
+        self.right = right
+    }
+}
+
+let p1 = Pair(left: 4, right: "hola")
+let p2 = Pair(left: p1, right: nums)
+
+// Genérico con restricciones
+class Bucket<Value: Hashable>{
+    
+    let val : Value
+    init(val: Value){
+        self.val = val
+    }
+}
+let b1 = Bucket(val: 4)
+// No cuela, porque pair NO implementa hashable
+//let b2 = Bucket(val: p1)
+
 
 //: ## Niveles de Acceso
 /*: Hay 4 opciones
