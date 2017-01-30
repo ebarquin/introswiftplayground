@@ -529,7 +529,154 @@ public struct Bag<Value: Hashable>{
     private func _doSomeWeirdÑapa(){}
 }
 
+//: # Value types & Reference types
 
+//: structs & enums -> Value Types (no referencias) y se copian
+//: class -> Reference type (no se copian y se comparten)
+//: class requieren ARC
+//: struct & enum no requieren ARC
+
+// Copia de value types
+var age = 33
+let b = age // Aqui se acaba hacer una copia
+
+age = age + 1
+dump(age)
+dump(b)
+
+// compartimos reference types
+class Person{
+    var name = "Manolo"
+}
+
+var manolo = Person()
+var lucas = manolo // no se copia, se comparte
+manolo.name = "Manué"
+dump(manolo)
+dump(lucas)
+
+//: # MultiDictionary
+public
+struct MultiDictionary<Key: Hashable, Value: Hashable>{
+    
+    //MARK: - Types
+    public
+    typealias Bucket = Set<Value>
+    
+    //MARK: - Properties
+    private
+    var _dict : [Key : Bucket]
+    
+    //MARK: - Lifecycle
+    public
+    init(){
+        _dict = Dictionary()
+    }
+    
+    //MARK: - Accessors
+    public
+    var isEmpty: Bool{
+        return _dict.isEmpty
+    }
+    
+    public
+    var countBuckets : Int{
+        return _dict.count
+    }
+    
+    public
+    var count : Int{
+        var total = 0
+        for bucket in _dict.values{
+            total += bucket.count
+        }
+        return total
+    }
+    
+    public
+    var countUnique : Int{
+        var total = Bucket()
+        
+        for bucket in _dict.values{
+            total = total.union(bucket)
+        }
+        return total.count
+    }
+    
+    //MARK: - Setters (Mutators)
+    public
+    subscript(key: Key) -> Bucket?{
+        get{
+            return _dict[key]
+        }
+        
+        set(maybeNewBucket){
+            guard let newBucket = maybeNewBucket else{
+                // añadir nada es no añadir
+                return
+            }
+            
+            guard let previous = _dict[key] else{
+                // Si no había nada bajo dicha clave
+                // la añadimos con un bucket vacio
+                _dict[key] = Bucket()
+                return
+            }
+            
+            // Creamos una unión de lo viejo y lo nuevo
+            _dict[key] = previous.union(newBucket)
+        }
+    }
+    
+    // Toda función que cambie el estado (self) de la
+    // estructura, tiene que venir precedida por
+    // la palabreja mutating
+    public
+    mutating func insert(value: Value, forKey key: Key){
+        
+        if var previous = _dict[key]{
+            previous.insert(value)
+            _dict[key] = previous
+        }else{
+            _dict[key] = [value]
+        }
+    }
+    
+    // Cosas que faltan (ver slack para versión completa)
+    // eliminar valores
+    // poder iterar por el multiDict como lo haces por
+    // un diccionario
+    
+}
+
+// Ejemplo de uso
+var map = MultiDictionary<String, Int>()
+
+var pares = Set<Int>()
+pares.insert(2)
+pares.insert(4)
+
+map["Pares"] = pares    // setter
+map["Pares"]            // getter
+
+//: Nil, Nada, la tupla vacía y la madre que lo parió
+let tupla2 = (1,2)
+let tupla1 = (9)    // no existe, es el elemento
+let tuple0 = ()
+
+// Tupla Vacía () -> La nada
+// nil  -> Existe un valor posible, pero ahora mismo no lo conozco
+
+// Toda función que no devuelve nada
+// realmente devuelve la tupla vacia
+func f1(a: Int){
+    dump(a)
+}
+// equivale a......
+func f2(a: Int) -> (){
+    dump(a)
+    return ()
+}
 
 
 
